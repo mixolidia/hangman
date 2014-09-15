@@ -3,51 +3,99 @@ require 'colorize'
 class Hangman
 
   def initialize
-    @head  = "\@"
-    @u_body = "|"
-    @l_body = "|"
-    @r_arm  = "/"
-    @l_arm  = "\\"
-    @r_leg  = "/"
-    @l_leg  = "\\"
-    #@word   = puzzle
-  end #end of initialize method
+    @head       = " "
+    @body       = " "
+    @r_arm      = " "
+    @l_arm      = " "
+    @r_leg      = " "
+    @l_leg      = " "
+    @puzzle     = r_word
+    @characters = empty_characters
+    @guesses    = []
+    @hangedman = [ "@", "|", "/", "\\", "/", "\\" ]
 
-  def puzzle
-    words.sample.tr( (a .. z), "-")
-  #"carrot".tr(^+guessed_letter, "_")
+    # @head       = "\@"
+    # @body       = "|"
+    # @r_arm      = "/"
+    # @l_arm      = "\\"
+    # @r_leg      = "/"
+    # @l_leg      = "\\"
+    # @word   = puzzle
+
+  end #initialize
+
+  def make_guess(guessed_letter)
+  return false if @guesses.include?(guessed_letter)
+    @puzzle.chars.each_with_index do |letter, index|
+    # .chars seperates all the characters into an array
+    if guessed_letter == letter
+        @characters[index] = letter
+    end
   end
 
-  def puzzle_length
+  @guesses << guessed_letter
 
+  end #make_guess(guessed_letter)
+
+  def end_game(puzzle)
+    if @puzzle = 
   end
+
+  def empty_characters
+    Array.new(@puzzle.length, "_")
+    # above will create an array with as many dashes as the word has letters.
+    # can also do a = []
+    # @secret.lenght.tims {a << "-"}
+  end #empty_characters
+
+  def characters
+    @characters
+  end #characters
+
+  def guess
+    @characters.join
+  end #guess
+
+  def r_word
+    words.sample
+  end #r_word
 
   def words
-    ["carro", "carrot", "corrode", "corral"]
-  end
+    ["carro", "carrot", "corrals", "corrodes", "coronaries"]
+  end #words
 
   def gallow
       puts <<GALLOW
 _________
 |/      |
 |       #{@head}
-|       #{@u_body}
-|      #{@r_arm}#{@l_body}#{@l_arm}
+|       #{@body}
+|      #{@r_arm}#{@body}#{@l_arm}
 |      #{@r_leg} #{@l_leg}
 |
 |___
+
+#{@guesses.join(" ")}
 GALLOW
-  end #end of gallow method
+  end #gallow
 
-end #end of Hangman class
+end #Hangman class
 
-h = Hangman.new
-h.gallow
-# puts h.puzzle
+#def run
+  h = Hangman.new
+    #while true
+    puts h.gallow
+    puts h.guess
+    puts "What letter would you like to guess?\n"
+    guess = gets.chomp
+    h.make_guess(guess)
 
-# Draw and print a board
-# secret word
-# make the concept of the blank spaces
+  #  end
+#end #run
+
+#run
+
+# puzzle word
 # take a guess and compare it to the secret word, update the characters
   # with guessed letter
 # remember guesses
